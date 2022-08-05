@@ -81,6 +81,7 @@ class App {
         const { latitude } = pos.coords;
         const { longitude } = pos.coords;
         const coords = [latitude, longitude];
+        console.log(coords);
         this.#map = L.map('map').setView(coords, this.#mapZoomlevel);
         this.#newLayerGroup = L.layerGroup().addTo(this.#map)
         L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
