@@ -3,8 +3,8 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: Arial;
-  background-image: url(img/3.svg); 
-  // background-color: #4d4d4d;
+  // background-image: url(img/3.svg); 
+  background-color: #4d4d4d;
 }
 
 .main {
@@ -184,16 +184,8 @@ footer {
   transition: transform 0.8s ease;
 }
 
-.loader {
-  background-color: black;
-  display: flex;
-  align-items: center;
-  height: 316px;
-}
 
-.data-load{
-  // width: 1285.170px;
-  // height: 712px;  
-  filter: opacity(40%) contrast(380%);
 
+.navigate{
+  display: none;
 }

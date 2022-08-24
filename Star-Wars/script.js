@@ -3,10 +3,9 @@ const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const loader = document.querySelector(".loader");
 const character = document.querySelectorAll(".character");
+
 let details = [];
 let curPage = 1;
-
-// characterContainer.innerHTML ='<img src="https://thumbs.gfycat.com/BiodegradableWigglyAfricanfisheagle-size_restricted.gif" class="data-load"></img>';
 
 function store(id, fullName, url, page) {
   const detail = {
@@ -20,7 +19,7 @@ function store(id, fullName, url, page) {
 
 const displayChar = function (url, name, id) {
   const html = `
-      <div class="character front" id="${id}">
+      <div class="character front" onclick='toggle(id)' id="${id}">
         <img src=${url} alt="img" />
         <div class="name">${name}</div>
     </div>`;
@@ -48,17 +47,19 @@ const displayDetails = function (
   </div>
 </div>
    `;
-  document.getElementById(elem.id).innerHTML = html;
-  document.getElementById(elem.id).style.transform = "rotateY(0deg)";
+  document.getElementById(id).innerHTML = html;
+  document.getElementById(id).style.transform = "rotateY(0deg)";
 };
 
 function displayCharAfter(id) {
   let path;
-  if (id > 16) {
-    path = details[arr.at(-2) - 2];
+
+  if (id >= 16) {
+    path = details[id - 1];
   } else {
-    path = details[arr.at(-2) - 1];
+    path = details[id + 1];
   }
+
   const html = `  
           <img src=${path.url} alt="img" />
           <div class="name">${path.fullName}</div>`;
@@ -81,10 +82,10 @@ function displayCharAfter(id) {
           `https://starwars-visualguide.com/assets/img/characters/${url}.jpg`
         ).then((data) => data.url);
         store(url, name, imgURL, +i);
-      }     
+      }
 
       if (i === 1) {
-        characterContainer.innerHTML ='';
+        characterContainer.innerHTML = "";
         renderChar(1);
       }
 
@@ -102,6 +103,7 @@ function renderChar(page) {
     .forEach((elem) => {
       displayChar(elem.url, elem.fullName, elem.id);
     });
+  document.querySelector(".navigate").style.display = "block";
 }
 
 async function getModalData(id) {
@@ -165,47 +167,25 @@ async function getModalData(id) {
   }
 }
 
-let arr = [];
+async function toggle(id) {
+  let ele1 = document.getElementById(id);
+  console.log(ele1);
 
-characterContainer.addEventListener("click", async function (e) {
-  elem = e.target.closest(".character");
-  if (elem) {
-    
-    arr.push(+elem.id);
-    let ele1 = document.getElementById(elem.id);
-
-    if (!ele1.classList.contains("back")) {
-      ele1.classList.add("back");
-      ele1.classList.remove("front");
-    }
-
-    this.addEventListener("click", function () {
-  
-      document.getElementById(`info-${arr.at(-2)}`).remove();
-      displayCharAfter(arr.at(-2));
-
-      let ele2 = document.getElementById(arr.at(-2));
-  
-
-      if (!ele2.classList.contains("front")) {
-        ele2.classList.add("front");
-        ele2.classList.remove("back");
-      }
-
-      if (
-        (document.getElementById(elem.id).style.transform = "rotateY(0deg)")
-      ) {
-        document.getElementById(elem.id).style.transform = "rotateY(180deg)";
-      }
-    });
-
-    (function loader() {
-      ele1.innerHTML = '<div class="loader"><img src="img/img.png" /></div>';
-    })();
-
-    await getModalData(elem.id);  
+  if (!ele1.classList.contains("back")) {
+    ele1.classList.add("back");
+    ele1.classList.remove("front");
   }
-});
+
+  if ((document.getElementById(id).style.transform = "rotateY(0deg)")) {
+    document.getElementById(id).style.transform = "rotateY(180deg)";
+  }
+
+  (function loader() {
+    ele1.innerHTML = '<div class="loader"><img src="img/img.png" /></div>';
+  })();
+
+  await getModalData(id);
+}
 
 document.addEventListener("click", function (e) {
   let prev = document.querySelector(".active");
